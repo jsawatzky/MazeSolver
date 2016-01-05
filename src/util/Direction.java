@@ -1,5 +1,7 @@
 package util;
 
+import maze.MazeCell;
+
 public class Direction {
     
     public static final Direction NORTH = new Direction(0);
@@ -26,6 +28,22 @@ public class Direction {
         } else {
             return UP;
         }
+        
+    }
+    
+    public static Direction getDirectionBetween(MazeCell cell1, MazeCell cell2) {
+        
+        if (cell1.x < cell2.x) {
+            return EAST;
+        } else if (cell1.x > cell2.x) {
+            return WEST;
+        } else if (cell1.y < cell2.y) {
+            return SOUTH;
+        } else if (cell1.y > cell2.y) {
+            return NORTH;
+        }
+        
+        return null;
         
     }
     

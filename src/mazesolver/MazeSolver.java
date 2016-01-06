@@ -12,6 +12,9 @@ import maze.Maze;
  * @author sawaj6311
  */
 public class MazeSolver extends javax.swing.JFrame {
+    
+    
+    private MazeGenerator mazeGenerator;
 
     /**
      * Creates new form MazeSolver
@@ -70,9 +73,9 @@ public class MazeSolver extends javax.swing.JFrame {
 
         jLabel1.setText("X Size");
 
-        xSize.setModel(new javax.swing.SpinnerNumberModel(15, 10, 100, 5));
+        xSize.setModel(new javax.swing.SpinnerNumberModel(15, 10, 1000, 5));
 
-        ySize.setModel(new javax.swing.SpinnerNumberModel(15, 10, 100, 5));
+        ySize.setModel(new javax.swing.SpinnerNumberModel(15, 10, 1000, 5));
 
         jLabel2.setText("Y Size");
 
@@ -86,6 +89,11 @@ public class MazeSolver extends javax.swing.JFrame {
 
         speed.setMinimum(1);
         speed.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        speed.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                speedStateChanged(evt);
+            }
+        });
 
         jLabel3.setText("Animation speed");
 
@@ -169,11 +177,11 @@ public class MazeSolver extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(canvas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(canvas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -182,7 +190,7 @@ public class MazeSolver extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(109, 109, 109)
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 49, Short.MAX_VALUE))
@@ -195,19 +203,30 @@ public class MazeSolver extends javax.swing.JFrame {
 
     private void generateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateActionPerformed
 
-        int x = Integer.parseInt(xSize.getValue().toString());
-        int y = Integer.parseInt(ySize.getValue().toString());
+        if (mazeGenerator == null) {
+            mazeGenerator = new MazeGenerator((int) xSize.getValue(), (int) ySize.getValue(), canvas.getGraphics(), 10, 10, canvas.getWidth()-20, canvas.getHeight()-20, animate.isSelected(), speed.getValue(), progress);
+        } else {
+            mazeGenerator.setxSize((int) xSize.getValue());
+            mazeGenerator.setySize((int) ySize.getValue());
+        }
 
-        MazeGenerator gen = new MazeGenerator();
-        Maze maze = gen.generate(x, y, canvas.getGraphics(), 10, 10, canvas.getWidth()-20, canvas.getHeight()-20, animate.isSelected(), speed.getValue(), progress);
+        Maze maze = mazeGenerator.generate();
 
     }//GEN-LAST:event_generateActionPerformed
 
     private void animateStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_animateStateChanged
         
-        
+        if (mazeGenerator != null) {
+            mazeGenerator.setAnimate(animate.isSelected());
+        }
         
     }//GEN-LAST:event_animateStateChanged
+
+    private void speedStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_speedStateChanged
+        if (mazeGenerator != null) {
+            mazeGenerator.setSpeed(speed.getValue());
+        }
+    }//GEN-LAST:event_speedStateChanged
 
     /**
      * @param args the command line arguments

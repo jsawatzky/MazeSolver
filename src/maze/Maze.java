@@ -1,7 +1,10 @@
 package maze;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class Maze {
@@ -22,43 +25,51 @@ public class Maze {
     
     public void render(Graphics g, int x, int y, int width, int height) {
         
-        g.setColor(Color.WHITE);
-        g.fillRect(x, y, width, height);
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2 = (Graphics2D) image.getGraphics();
+        
+        g2.setColor(new Color(240, 240, 240));
+        g2.fillRect(0, 0, width, height);
+        
+        g2.setStroke(new BasicStroke(1));
         
         int xCellSize = width/grid.length;
         int yCellSize = height/grid[0].length;
         
-        Color[] colors = {Color.WHITE, Color.GRAY, Color.RED};
+        Color[] colors = {Color.WHITE, Color.GRAY, Color.RED, Color.YELLOW};
         
         for (int i = 0; i < grid.length; i++) {
             
-            int xLeft = x+i*xCellSize;
-            int xRight = x+(i*xCellSize)+xCellSize;
+            int xLeft = i*xCellSize;
+            int xRight = (i*xCellSize)+xCellSize;
             
             for (int j = 0; j < grid[0].length; j++) {
                 
-                g.setColor(colors[grid[i][j].state]);
-                g.fillRect(x+i*xCellSize, y+j*yCellSize, xCellSize, yCellSize);
+                int yTop = j*yCellSize;
+                int yBottom = (j*yCellSize)+yCellSize;
                 
-                int yTop = y+j*yCellSize;
-                int yBottom = y+(j*yCellSize)+yCellSize;
+                g2.setColor(colors[grid[i][j].state]);
+                g2.fillRect(xLeft, yTop, xCellSize, yCellSize);
                 
-                g.setColor(Color.BLACK);
+                g2.setColor(Color.BLACK);
                 
                 if (!grid[i][j].directions[0]) {
-                    g.drawLine(xLeft, yTop, xRight, yTop);
+                    g2.drawLine(xLeft, yTop, xRight, yTop);
                 }
                 if (!grid[i][j].directions[1]) {
-                    g.drawLine(xRight, yTop, xRight, yBottom);
+                    g2.drawLine(xRight, yTop, xRight, yBottom);
                 }
                 if (!grid[i][j].directions[2]) {
-                    g.drawLine(xLeft, yBottom, xRight, yBottom);
+                    g2.drawLine(xLeft, yBottom, xRight, yBottom);
                 }
                 if (!grid[i][j].directions[3]) {
-                    g.drawLine(xLeft, yTop, xLeft, yBottom);
+                    g2.drawLine(xLeft, yTop, xLeft, yBottom);
                 }
             }
         }
+        
+        g.drawImage(image, x, y, null);
+        g2.dispose();
         
     }
     

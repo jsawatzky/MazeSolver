@@ -8,7 +8,7 @@ public class MazeCell {
     
     public boolean[] directions = new boolean[6];
     
-    public boolean inMaze = false;
+    public int state = OUT;
 
     public MazeCell(int x, int y) {
         this.x = x;
@@ -20,5 +20,10 @@ public class MazeCell {
         directions[dir.dir] = true;
         
     }
+    
+    public static final int IN = 0;
+    public static final int OUT = 1;
+    public static final int FRONTIER = 2;
+    
     
 }

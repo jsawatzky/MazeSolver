@@ -1,36 +1,52 @@
 package generation;
 
+import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Random;
+import javax.swing.JProgressBar;
 import maze.Maze;
 import maze.MazeCell;
 import util.Direction;
 
 public class MazeGenerator {
     
-    private static Random r = new Random();
+    private Random r = new Random();
     
-    public static Maze generate(int xSize, int ySize) {
-        
-        System.out.println(2|16);
+    private ArrayList<MazeCell> frontier;
+    
+    public Maze generate(int xSize, int ySize, Graphics g, int x, int y, int width, int height, boolean animate, int speed, JProgressBar progress) {
         
         Maze maze = new Maze(xSize, ySize);
         
-        ArrayList<MazeCell> frontier = new ArrayList<>();
+        progress.setMaximum(xSize*ySize);
+        
+        if (animate) {
+            maze.render(g, x, y, width, height);
+            sleep(1000/speed);
+        }
+        
+        frontier = new ArrayList<>();
         
         int xStart = r.nextInt(xSize);
         int yStart = r.nextInt(ySize);
         MazeCell start = maze.grid[xStart][yStart];
         
-        start.inMaze = true;
+        start.state = MazeCell.IN;
+        progress.setValue(1);
         
-        frontier.addAll(maze.getOutOfMazeNeighbors(start));
+        addToFronteir(maze.getOutOfMazeNeighbors(start));
+        
+        if (animate) {
+            maze.render(g, x, y, width, height);
+            sleep(1000/speed);
+        }
         
         while (!frontier.isEmpty()) {
             
             MazeCell cur = frontier.remove(r.nextInt(frontier.size()));
-            frontier.addAll(maze.getOutOfMazeNeighbors(cur));
-            cur.inMaze = true;
+            addToFronteir(maze.getOutOfMazeNeighbors(cur));
+            cur.state = MazeCell.IN;
+            progress.setValue(progress.getValue()+1);
             
             ArrayList<MazeCell> neighbors = maze.getInMazeNeighbors(cur);
                 
@@ -41,9 +57,33 @@ public class MazeGenerator {
             cur.addDirection(dir);
             other.addDirection(dir.getOpposite());
             
+            if (animate) {
+                maze.render(g, x, y, width, height);
+                sleep(1000/speed);
+            }
+            
         }
         
+        maze.render(g, x, y, width, height);
+        
         return maze;
+        
+    }
+    
+    private void addToFronteir(ArrayList<MazeCell> cells) {
+        
+        for (MazeCell cell: cells) {
+            cell.state = MazeCell.FRONTIER;
+            frontier.add(cell);
+        }
+        
+    }
+    
+    private static void sleep(int ms) {
+        
+        try {
+            Thread.sleep(ms);
+        } catch (Exception e) {}
         
     }
     

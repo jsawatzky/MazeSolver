@@ -3,6 +3,9 @@ package generation;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import maze.Maze;
 import maze.MazeCell;
@@ -13,12 +16,14 @@ public class MazeGenerator implements Runnable {
     private final Random r = new Random();
     
     private Thread thread;
+    private volatile boolean running = false;
     
     private Maze maze;
     
     private int xSize, ySize;
-    private ArrayList<MazeCell> frontier = new ArrayList<>();
+    private ArrayList<MazeCell> frontier;
     
+    private JPanel canvas;
     private Graphics g;
     private int x, y, width, height;
     private boolean animate;
@@ -26,14 +31,10 @@ public class MazeGenerator implements Runnable {
     
     private JProgressBar progressBar;
 
-    public MazeGenerator(int xSize, int ySize, Graphics g, int x, int y, int width, int height, boolean animate, int speed, JProgressBar progress) {
+    public MazeGenerator(int xSize, int ySize, JPanel canvas, boolean animate, int speed, JProgressBar progress) {
         this.xSize = xSize;
         this.ySize = ySize;
-        this.g = g;
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
+        this.canvas = canvas;
         this.animate = animate;
         this.speed = speed;
         this.progressBar = progress;
@@ -41,8 +42,11 @@ public class MazeGenerator implements Runnable {
     
     public Maze generate() {
         
-        if (thread != null) {
-            thread.interrupt();
+        if (running) {
+            running = false;
+            try {
+                thread.join();
+            } catch (InterruptedException ex) {}
         }
         
         thread = new Thread(this);
@@ -73,12 +77,16 @@ public class MazeGenerator implements Runnable {
     @Override
     public void run() {
         
+        running = true;
+        
         maze = new Maze(xSize, ySize);
+        
+        frontier = new ArrayList<>();
         
         progressBar.setMaximum(xSize*ySize);
         
-        if (animate) {
-            maze.render(g, x, y, width, height);
+        if (animate && running) {
+            maze.render(canvas);
             sleep(1000/speed);
         }
 
@@ -91,18 +99,18 @@ public class MazeGenerator implements Runnable {
 
         addToFronteir(maze.getOutOfMazeNeighbors(start));
 
-        if (animate) {
-            maze.render(g, x, y, width, height);
+        if (animate && running) {
+            maze.render(canvas);
             sleep(1000/speed);
         }
 
-        while (!frontier.isEmpty()) {
+        while (!frontier.isEmpty() && running) {
 
             MazeCell cur = frontier.remove(r.nextInt(frontier.size()));
             cur.state = MazeCell.SELECTED;
             
-            if (animate) {
-                maze.render(g, x, y, width, height);
+            if (animate && running) {
+                maze.render(canvas);
                 sleep(1000/speed);
             }
 
@@ -119,15 +127,21 @@ public class MazeGenerator implements Runnable {
             cur.state = MazeCell.IN;
             progressBar.setValue(progressBar.getValue()+1);
 
-            if (animate) {
-                maze.render(g, x, y, width, height);
+            if (animate && running) {
+                maze.render(canvas);
                 sleep(1000/speed);
             }
 
         }
 
-        maze.render(g, x, y, width, height);
+        if (running) {
+            
+            maze.render(canvas);
         
+            maze.complete = true;
+            
+        }
+
     }
 
     public void setSpeed(int speed) {

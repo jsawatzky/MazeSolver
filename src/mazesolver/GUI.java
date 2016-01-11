@@ -11,7 +11,7 @@ import maze.Maze;
  *
  * @author sawaj6311
  */
-public class MazeSolver extends javax.swing.JFrame {
+public class GUI extends javax.swing.JFrame {
     
     
     private MazeGenerator mazeGenerator;
@@ -19,7 +19,7 @@ public class MazeSolver extends javax.swing.JFrame {
     /**
      * Creates new form MazeSolver
      */
-    public MazeSolver() {
+    public GUI() {
         initComponents();
     }
 
@@ -204,7 +204,7 @@ public class MazeSolver extends javax.swing.JFrame {
     private void generateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateActionPerformed
 
         if (mazeGenerator == null) {
-            mazeGenerator = new MazeGenerator((int) xSize.getValue(), (int) ySize.getValue(), canvas.getGraphics(), 10, 10, canvas.getWidth()-20, canvas.getHeight()-20, animate.isSelected(), speed.getValue(), progress);
+            mazeGenerator = new MazeGenerator((int) xSize.getValue(), (int) ySize.getValue(), canvas, animate.isSelected(), speed.getValue(), progress);
         } else {
             mazeGenerator.setxSize((int) xSize.getValue());
             mazeGenerator.setySize((int) ySize.getValue());
@@ -245,20 +245,20 @@ public class MazeSolver extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MazeSolver.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MazeSolver.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MazeSolver.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MazeSolver.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MazeSolver().setVisible(true);
+                new GUI().setVisible(true);
             }
         });
     }

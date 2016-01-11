@@ -6,10 +6,13 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import javax.swing.JPanel;
 
 public class Maze {
     
     public final MazeCell[][] grid;
+    
+    public boolean complete = false;
 
     public Maze(int xSize, int ySize) {
         
@@ -23,7 +26,10 @@ public class Maze {
         
     }
     
-    public void render(Graphics g, int x, int y, int width, int height) {
+    public void render(JPanel canvas) {
+        
+        int width = canvas.getWidth()-20;
+        int height = canvas.getHeight()-20;
         
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics2D g2 = (Graphics2D) image.getGraphics();
@@ -68,7 +74,8 @@ public class Maze {
             }
         }
         
-        g.drawImage(image, x, y, null);
+        
+        canvas.getGraphics().drawImage(image, 10, 10, null);
         g2.dispose();
         
     }

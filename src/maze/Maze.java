@@ -10,23 +10,24 @@ import javax.swing.JPanel;
 
 public class Maze {
     
-    public final MazeCell[][] grid;
+    public final MazeCell[][][] grid;
     
     public boolean complete = false;
 
-    public Maze(int xSize, int ySize) {
+    public Maze(int xSize, int ySize, int zSize) {
         
-        grid = new MazeCell[xSize][ySize];
+        grid = new MazeCell[xSize][ySize][zSize];
         
         for (int i = 0; i < xSize; i++) {
             for (int j = 0; j < ySize; j++) {
-                grid[i][j] = new MazeCell(i, j);
+                for (int k = 0; k < zSize; k++)
+                grid[i][j][k] = new MazeCell(i, j, k);
             }
         }
         
     }
     
-    public void render(JPanel canvas) {
+    public void render(JPanel canvas, int layer) {
         
         int width = canvas.getWidth()-20;
         int height = canvas.getHeight()-20;
@@ -54,21 +55,21 @@ public class Maze {
                 int yTop = j*yCellSize;
                 int yBottom = (j*yCellSize)+yCellSize;
                 
-                g2.setColor(colors[grid[i][j].state]);
+                g2.setColor(colors[grid[i][j][layer].state]);
                 g2.fillRect(xLeft, yTop, xCellSize, yCellSize);
                 
                 g2.setColor(Color.BLACK);
                 
-                if (!grid[i][j].directions[0]) {
+                if (!grid[i][j][layer].directions[0]) {
                     g2.drawLine(xLeft, yTop, xRight, yTop);
                 }
-                if (!grid[i][j].directions[1]) {
+                if (!grid[i][j][layer].directions[1]) {
                     g2.drawLine(xRight, yTop, xRight, yBottom);
                 }
-                if (!grid[i][j].directions[2]) {
+                if (!grid[i][j][layer].directions[2]) {
                     g2.drawLine(xLeft, yBottom, xRight, yBottom);
                 }
-                if (!grid[i][j].directions[3]) {
+                if (!grid[i][j][layer].directions[3]) {
                     g2.drawLine(xLeft, yTop, xLeft, yBottom);
                 }
             }
@@ -84,10 +85,12 @@ public class Maze {
         
         ArrayList<MazeCell> neighbors = new ArrayList<>();
         
-        try { if (grid[cell.x-1][cell.y].state == MazeCell.OUT) { neighbors.add(grid[cell.x-1][cell.y]); } } catch (IndexOutOfBoundsException e) {}
-        try { if (grid[cell.x][cell.y-1].state == MazeCell.OUT) { neighbors.add(grid[cell.x][cell.y-1]); } } catch (IndexOutOfBoundsException e) {}
-        try { if (grid[cell.x+1][cell.y].state == MazeCell.OUT) { neighbors.add(grid[cell.x+1][cell.y]); } } catch (IndexOutOfBoundsException e) {}
-        try { if (grid[cell.x][cell.y+1].state == MazeCell.OUT) { neighbors.add(grid[cell.x][cell.y+1]); } } catch (IndexOutOfBoundsException e) {}
+        try { if (grid[cell.x-1][cell.y][cell.z].state == MazeCell.OUT) { neighbors.add(grid[cell.x-1][cell.y][cell.z]); } } catch (IndexOutOfBoundsException e) {}
+        try { if (grid[cell.x][cell.y-1][cell.z].state == MazeCell.OUT) { neighbors.add(grid[cell.x][cell.y-1][cell.z]); } } catch (IndexOutOfBoundsException e) {}
+        try { if (grid[cell.x+1][cell.y][cell.z].state == MazeCell.OUT) { neighbors.add(grid[cell.x+1][cell.y][cell.z]); } } catch (IndexOutOfBoundsException e) {}
+        try { if (grid[cell.x][cell.y+1][cell.z].state == MazeCell.OUT) { neighbors.add(grid[cell.x][cell.y+1][cell.z]); } } catch (IndexOutOfBoundsException e) {}
+        try { if (grid[cell.x][cell.y+1][cell.z+1].state == MazeCell.OUT) { neighbors.add(grid[cell.x][cell.y+1][cell.z+1]); } } catch (IndexOutOfBoundsException e) {}
+        try { if (grid[cell.x][cell.y+1][cell.z-1].state == MazeCell.OUT) { neighbors.add(grid[cell.x][cell.y+1][cell.z-1]); } } catch (IndexOutOfBoundsException e) {}
         
         return neighbors;
         
@@ -97,10 +100,12 @@ public class Maze {
         
         ArrayList<MazeCell> neighbors = new ArrayList<>();
         
-        try { if (grid[cell.x-1][cell.y].state == MazeCell.IN) { neighbors.add(grid[cell.x-1][cell.y]); } } catch (IndexOutOfBoundsException e) {}
-        try { if (grid[cell.x][cell.y-1].state == MazeCell.IN) { neighbors.add(grid[cell.x][cell.y-1]); } } catch (IndexOutOfBoundsException e) {}
-        try { if (grid[cell.x+1][cell.y].state == MazeCell.IN) { neighbors.add(grid[cell.x+1][cell.y]); } } catch (IndexOutOfBoundsException e) {}
-        try { if (grid[cell.x][cell.y+1].state == MazeCell.IN) { neighbors.add(grid[cell.x][cell.y+1]); } } catch (IndexOutOfBoundsException e) {}
+        try { if (grid[cell.x-1][cell.y][cell.z].state == MazeCell.IN) { neighbors.add(grid[cell.x-1][cell.y][cell.z]); } } catch (IndexOutOfBoundsException e) {}
+        try { if (grid[cell.x][cell.y-1][cell.z].state == MazeCell.IN) { neighbors.add(grid[cell.x][cell.y-1][cell.z]); } } catch (IndexOutOfBoundsException e) {}
+        try { if (grid[cell.x+1][cell.y][cell.z].state == MazeCell.IN) { neighbors.add(grid[cell.x+1][cell.y][cell.z]); } } catch (IndexOutOfBoundsException e) {}
+        try { if (grid[cell.x][cell.y+1][cell.z].state == MazeCell.IN) { neighbors.add(grid[cell.x][cell.y+1][cell.z]); } } catch (IndexOutOfBoundsException e) {}
+        try { if (grid[cell.x][cell.y+1][cell.z+1].state == MazeCell.IN) { neighbors.add(grid[cell.x][cell.y+1][cell.z+1]); } } catch (IndexOutOfBoundsException e) {}
+        try { if (grid[cell.x][cell.y+1][cell.z-1].state == MazeCell.IN) { neighbors.add(grid[cell.x][cell.y+1][cell.z-1]); } } catch (IndexOutOfBoundsException e) {}
         
         return neighbors;
         

@@ -4,15 +4,16 @@ import util.Direction;
 
 public class MazeCell {
     
-    public final int x, y;
+    public final int x, y, z;
     
     public boolean[] directions = new boolean[6];
     
     public int state = OUT;
 
-    public MazeCell(int x, int y) {
+    public MazeCell(int x, int y, int z) {
         this.x = x;
         this.y = y;
+        this.z = z;
     }
     
     public void addDirection(Direction dir) {

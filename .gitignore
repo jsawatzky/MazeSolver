@@ -59,3 +59,9 @@ $RECYCLE.BIN/
 *.lnk
 /build/
 *.dll
+.idea/.name
+*.xml
+nbproject/private/private.properties
+MazeSolver.iml
+*.properties
+nbproject/private/private.xml

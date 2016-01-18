@@ -3,25 +3,30 @@ package solving;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.PriorityQueue;
+import javax.swing.JProgressBar;
 import maze.Maze;
 import maze.MazeCell;
+import static solving.SolvingAlgorithm.sleep;
 
 /**
  * Created by Jacob on 2016-01-17.
  */
-public class AStarSolver extends SolvingAlgorithm {
+public class AStar extends SolvingAlgorithm {
     
     private PriorityQueue<MazeCell> openSet;
     private HashMap<MazeCell, Double> score = new HashMap<>();
     private HashMap<MazeCell, MazeCell> cameFrom = new HashMap<>();
 
-    public AStarSolver(Maze maze) {
-        super(maze);
-        openSet = new PriorityQueue<>(new AStarComparator(maze));
+    public AStar(boolean animate, int speed, JProgressBar progress) {
+        super(animate, speed, progress);
     }
 
     @Override
-    public void run() {
+    public void solve(Maze maze) {
+        
+        running = true;
+        
+        openSet = new PriorityQueue<>((maze.grid.length*maze.grid[0].length)/2, new AStarComparator(maze));
         
         openSet.add(maze.getStart());
         score.put(maze.getStart(), 0.0);
@@ -33,9 +38,17 @@ public class AStarSolver extends SolvingAlgorithm {
             
             if (cur.equals(maze.getEnd())) {
                 createPath(cur);
+                return;
             }
             
             cur.state = MazeCell.VISITED;
+            
+            if (animate && running) {
+                maze.render();
+                sleep(100);
+            } else if (!running) {
+                return;
+            }
             
             for (MazeCell neighbor: maze.getUnvisitedNeighbors(cur)) {
                 
@@ -50,9 +63,18 @@ public class AStarSolver extends SolvingAlgorithm {
                 cameFrom.put(neighbor, cur);
                 score.put(neighbor, tentativeScore);
                 
+                if (animate && running) {
+                maze.render();
+                sleep(100);
+                } else if (!running) {
+                    return;
+                }
+                
             }
             
         }
+        
+        running = false;
         
     }
     
@@ -64,6 +86,11 @@ public class AStarSolver extends SolvingAlgorithm {
             from.state = MazeCell.IN_PATH;
         }
         
+    }
+
+    @Override
+    public String toString() {
+        return "A* Pathfinder";
     }
     
     private class AStarComparator implements Comparator<MazeCell> {

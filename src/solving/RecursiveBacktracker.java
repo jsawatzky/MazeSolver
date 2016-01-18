@@ -5,7 +5,7 @@ import maze.MazeCell;
 
 import java.util.ArrayList;
 import java.util.Random;
-import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 
 /**
  * Created by Jacob on 2016-01-16.
@@ -16,15 +16,15 @@ public class RecursiveBacktracker extends SolvingAlgorithm {
 
     private ArrayList<MazeCell> path = new ArrayList<>();
     
-    private JPanel canvas;
 
-    public RecursiveBacktracker(Maze maze, JPanel canvas) {
-        super(maze);
-        this.canvas = canvas;
+    public RecursiveBacktracker(boolean animate, int speed, JProgressBar progress) {
+        super(animate, speed, progress);
     }
 
     @Override
-    public void run() {
+    public void solve(Maze maze) {
+        
+        running = true;
 
         path.add(maze.getStart());
 
@@ -34,8 +34,12 @@ public class RecursiveBacktracker extends SolvingAlgorithm {
         cur.state = MazeCell.SELECTED;
         maze.getStart().state = MazeCell.VISITED;
         
-        //maze.render(canvas, 0);
-        //sleep(100);
+        if (animate && running) {
+            maze.render();
+            sleep(100);
+        } else if (!running) {
+            return;
+        }
 
         while (!cur.equals(maze.getStart()) || unvisitedNeighbors.size() > 0) {
 
@@ -56,19 +60,22 @@ public class RecursiveBacktracker extends SolvingAlgorithm {
                 cur.state = MazeCell.SELECTED;
             }
             
-            //maze.render(canvas, 0);
-            //sleep(100);
+            if (animate && running) {
+                maze.render();
+                sleep(100);
+            } else if (!running) {
+                return;
+            }
 
         }
+        
+        running = false;
 
     }
-    
-    private static void sleep(int ms) {
-        
-        try {
-            Thread.sleep(ms);
-        } catch (Exception e) {}
-        
+
+    @Override
+    public String toString() {
+        return "Recursive Backtracker";
     }
 
 }

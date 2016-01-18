@@ -5,9 +5,13 @@
 package mazesolver;
 
 import generation.MazeGenerator;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.event.ListDataListener;
 import maze.Maze;
 import solving.MazeSolver;
 import solving.RecursiveBacktracker;
+import solving.SolvingAlgorithm;
 
 /**
  *
@@ -27,7 +31,8 @@ public class GUI extends javax.swing.JFrame {
     public GUI() {
         initComponents();
         mazeGenerator = new MazeGenerator((int) xSize.getValue(), (int) ySize.getValue(), (int) zSize.getValue(), canvas, animateGen.isSelected(), speedGen.getValue(), progressGen);
-        mazeSolver = new MazeSolver(canvas, animateGen.isSelected(), speedGen.getValue(), progressSolve);
+        mazeSolver = new MazeSolver(animateSolve.isSelected(), speedSolve.getValue(), progressSolve);
+        algorithm.setModel(new DefaultComboBoxModel<>(mazeSolver.getAlgorithms().toArray(new SolvingAlgorithm[mazeSolver.getAlgorithms().size()])));
     }
 
     /**
@@ -54,7 +59,7 @@ public class GUI extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         zSize = new javax.swing.JSpinner();
         jPanel4 = new javax.swing.JPanel();
-        algorithm = new javax.swing.JComboBox<>();
+        algorithm = new javax.swing.JComboBox<SolvingAlgorithm>();
         jLabel6 = new javax.swing.JLabel();
         animateSolve = new javax.swing.JCheckBox();
         speedSolve = new javax.swing.JSlider();
@@ -193,7 +198,7 @@ public class GUI extends javax.swing.JFrame {
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Solving"));
 
-        algorithm.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        algorithm.setModel(new javax.swing.DefaultComboBoxModel(new SolvingAlgorithm[1]));
 
         jLabel6.setText("Algortim:");
 
@@ -361,7 +366,7 @@ public class GUI extends javax.swing.JFrame {
 
     private void solveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_solveActionPerformed
         
-        
+        mazeSolver.solve(maze, (SolvingAlgorithm) algorithm.getSelectedItem());
         
     }//GEN-LAST:event_solveActionPerformed
 
@@ -400,7 +405,7 @@ public class GUI extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> algorithm;
+    private javax.swing.JComboBox<SolvingAlgorithm> algorithm;
     private javax.swing.JCheckBox animateGen;
     private javax.swing.JCheckBox animateSolve;
     private javax.swing.JPanel canvas;

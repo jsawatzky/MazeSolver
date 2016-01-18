@@ -26,6 +26,8 @@ public class MazeCell {
     public static final int OUT = 1;
     public static final int FRONTIER = 2;
     public static final int SELECTED = 3;
+    public static final int VISITED = 4;
+    public static final int IN_PATH = 5;
     
     
 }

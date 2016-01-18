@@ -31,7 +31,7 @@ public class Direction {
         
     }
     
-    public static Direction getDirectionBetween(MazeCell cell1, MazeCell cell2) {
+    public static Direction getDirectionBetweenAdjacent(MazeCell cell1, MazeCell cell2) {
         
         if (cell1.x < cell2.x) {
             return EAST;
@@ -41,9 +41,11 @@ public class Direction {
             return SOUTH;
         } else if (cell1.y > cell2.y) {
             return NORTH;
+        } else if (cell1.z < cell2.z) {
+            return UP;
+        } else {
+            return DOWN;
         }
-        
-        return null;
         
     }
     

@@ -4,6 +4,7 @@ import maze.Maze;
 import maze.MazeCell;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Random;
 import javax.swing.JProgressBar;
 
@@ -14,62 +15,79 @@ public class RecursiveBacktracker extends SolvingAlgorithm {
 
     private final Random r = new Random();
 
-    private ArrayList<MazeCell> path = new ArrayList<>();
+    private ArrayList<MazeCell> path;
     
-
+    private int numCellsVisited, numSteps;
+    
     public RecursiveBacktracker(boolean animate, int speed, JProgressBar progress) {
         super(animate, speed, progress);
     }
 
     @Override
-    public void solve(Maze maze) {
+    public MazeSolution solve(Maze maze) {
         
         running = true;
+        
+        progress.setMaximum((int) maze.getDistanceFromEnd(maze.getStart()));
+        
+        numCellsVisited = 0;
+        numSteps = 0;
+        
+        path = new ArrayList<>();
 
-        path.add(maze.getStart());
-
-        ArrayList<MazeCell> unvisitedNeighbors = maze.getUnvisitedNeighbors(maze.getStart());
-
-        MazeCell cur = unvisitedNeighbors.get(r.nextInt(unvisitedNeighbors.size()));
+        
+        MazeCell cur = maze.getStart();
+        ArrayList<MazeCell> unvisitedNeighbors = maze.getUnvisitedNeighbors(cur);
         cur.state = MazeCell.SELECTED;
-        maze.getStart().state = MazeCell.VISITED;
+        progress.setValue((int) maze.getDistanceFromEnd(maze.getStart())-(int) maze.getDistanceFromEnd(cur));
+        numCellsVisited++;
         
         if (animate && running) {
             maze.render();
-            sleep(100);
+            sleep(1000/speed);
         } else if (!running) {
-            return;
+            return null;
         }
 
         while (!cur.equals(maze.getStart()) || unvisitedNeighbors.size() > 0) {
 
-            unvisitedNeighbors = maze.getUnvisitedNeighbors(cur);
-
             if (unvisitedNeighbors.size() > 0) {
                 cur.state = MazeCell.IN_PATH;
                 path.add(cur);
-                //TODO: Optimize by chosing direction based on direction to end
                 cur = unvisitedNeighbors.get(r.nextInt(unvisitedNeighbors.size()));
                 if (cur.equals(maze.getEnd())) {
-                    return;
+                    path.add(cur);
+                    cur.state = MazeCell.IN_PATH;
+                    progress.setValue((int) maze.getDistanceFromEnd(maze.getStart()));
+                    running = false;
+                    return new MazeSolution(path, numCellsVisited, numSteps);
                 }
                 cur.state = MazeCell.SELECTED;
+                numCellsVisited++;
             } else {
                 cur.state = MazeCell.VISITED;
                 cur = path.remove(path.size()-1);
                 cur.state = MazeCell.SELECTED;
             }
             
+            unvisitedNeighbors = maze.getUnvisitedNeighbors(cur);
+            
+            progress.setValue((int) maze.getDistanceFromEnd(maze.getStart())-(int) maze.getDistanceFromEnd(cur));
+            
+            numSteps++;
+            
             if (animate && running) {
                 maze.render();
-                sleep(100);
+                sleep(1000/speed);
             } else if (!running) {
-                return;
+                return null;
             }
 
         }
         
         running = false;
+        
+        return null;
 
     }
 

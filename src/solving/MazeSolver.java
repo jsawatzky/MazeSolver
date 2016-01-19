@@ -2,6 +2,7 @@ package solving;
 
 import java.util.ArrayList;
 import javax.swing.JProgressBar;
+import javax.swing.JTextArea;
 import maze.Maze;
 
 public class MazeSolver implements Runnable {
@@ -18,12 +19,14 @@ public class MazeSolver implements Runnable {
     private int speed;
     
     private final JProgressBar progressBar;
+    private final JTextArea results;
 
-    public MazeSolver(boolean animate, int speed, JProgressBar progressBar) {
+    public MazeSolver(boolean animate, int speed, JProgressBar progressBar, JTextArea results) {
         
         this.animate = animate;
         this.speed = speed;
         this.progressBar = progressBar;
+        this.results = results;
         
         algorithms.add(new RecursiveBacktracker(animate, speed, progressBar));
         algorithms.add(new AStar(animate, speed, progressBar));
@@ -31,10 +34,6 @@ public class MazeSolver implements Runnable {
     }
     
     public void solve(Maze maze, SolvingAlgorithm algorithm) {
-        
-        if (!maze.complete) {
-            return;
-        }
         
         if (running) {
             running = false;
@@ -61,12 +60,31 @@ public class MazeSolver implements Runnable {
         
         running = true;
         
-        curAlgorithm.solve(curMaze);
+        curMaze.reset();
+        
+        MazeSolution solution = curAlgorithm.solve(curMaze);
         
         curMaze.render();
         
+        if (solution != null) {
+            results.setText(solution.toString());
+        } else {
+            results.setText("No Solution Found!");
+        }
+        
         running = false;
         
+    }
+
+    public boolean isRunning() {
+        return running;
+    }
+
+    public void setRunning(boolean running) {
+        this.running = running;
+        if (curAlgorithm != null) {
+            curAlgorithm.setRunning(running);
+        }
     }
     
     public void setSpeed(int speed) {

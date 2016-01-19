@@ -27,7 +27,7 @@ public abstract class SolvingAlgorithm {
         
     }
     
-    public abstract void solve(Maze maze);
+    public abstract MazeSolution solve(Maze maze);
     
     protected static void sleep(int ms) {
         

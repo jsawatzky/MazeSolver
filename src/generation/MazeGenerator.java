@@ -67,6 +67,8 @@ public class MazeGenerator implements Runnable {
         if (animate && running) {
             maze.render();
             sleep(1000/speed);
+        } else if (!running) {
+            return;
         }
 
         int xStart = r.nextInt(xSize);
@@ -82,6 +84,8 @@ public class MazeGenerator implements Runnable {
         if (animate && running) {
             maze.render();
             sleep(1000/speed);
+        } else if (!running) {
+            return;
         }
 
         while (!frontier.isEmpty() && running) {
@@ -92,6 +96,8 @@ public class MazeGenerator implements Runnable {
             if (animate && running) {
                 maze.render();
                 sleep(1000/speed);
+            } else if (!running) {
+                return;
             }
 
             ArrayList<MazeCell> neighbors = maze.getInNeighbors(cur);
@@ -110,15 +116,17 @@ public class MazeGenerator implements Runnable {
             if (animate && running) {
                 maze.render();
                 sleep(1000/speed);
+            } else if (!running) {
+                return;
             }
 
         }
 
         if (running) {
-            
-            maze.render();
         
             maze.complete = true;
+            
+            maze.render();
             
         }
 

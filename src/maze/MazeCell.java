@@ -28,6 +28,12 @@ public class MazeCell {
     public static final int SELECTED = 3;
     public static final int VISITED = 4;
     public static final int IN_PATH = 5;
+
+    @Override
+    public String toString() {
+        return "(" + x + ", " + y + ", " + z + ")";
+    }
+    
     
     
 }

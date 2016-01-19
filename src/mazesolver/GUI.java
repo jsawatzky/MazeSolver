@@ -18,7 +18,7 @@ import solving.SolvingAlgorithm;
  */
 public class GUI extends javax.swing.JFrame {
     
-    
+    //Feilds
     private MazeGenerator mazeGenerator;
     private MazeSolver mazeSolver;
     private Maze maze;
@@ -29,8 +29,12 @@ public class GUI extends javax.swing.JFrame {
      */
     public GUI() {
         initComponents();
+        
+        //Initialize maze generator and solver
         mazeGenerator = new MazeGenerator((int) xSize.getValue(), (int) ySize.getValue(), (int) zSize.getValue(), canvas, animateGen.isSelected(), speedGen.getValue(), progressGen);
         mazeSolver = new MazeSolver(animateSolve.isSelected(), speedSolve.getValue(), progressSolve, results);
+        
+        //Add algorithms to drop-down menu
         algorithm.setModel(new DefaultComboBoxModel<>(mazeSolver.getAlgorithms().toArray(new SolvingAlgorithm[mazeSolver.getAlgorithms().size()])));
     }
 
@@ -371,11 +375,15 @@ public class GUI extends javax.swing.JFrame {
 
     private void generateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateActionPerformed
 
+        //Update maze properties based on form settings
         mazeGenerator.setxSize((int) xSize.getValue());
         mazeGenerator.setySize((int) ySize.getValue());
         mazeGenerator.setzSize((int) zSize.getValue());
+        
+        //Reset the current layer to 0
         layer = 0;
 
+        //Generate the maze and store it
         maze = mazeGenerator.generate();
 
 
@@ -383,6 +391,7 @@ public class GUI extends javax.swing.JFrame {
 
     private void animateGenStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_animateGenStateChanged
         
+        //Tell the maze generator whether or not to animate it's process based on the state of the checkbox
         mazeGenerator.setAnimate(animateGen.isSelected());
         
     }//GEN-LAST:event_animateGenStateChanged

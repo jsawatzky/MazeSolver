@@ -398,6 +398,7 @@ public class GUI extends javax.swing.JFrame {
 
     private void speedGenStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_speedGenStateChanged
         
+        //Tell the maze generator how fast to animate
         mazeGenerator.setSpeed(speedGen.getValue());
         
     }//GEN-LAST:event_speedGenStateChanged
@@ -408,6 +409,7 @@ public class GUI extends javax.swing.JFrame {
             
             int rot = evt.getWheelRotation();
         
+            //Go down a layer if the wheel is rotated away from the user and up is otherwise
             if (rot < 0 && layer > 0) {
                 layer--;
             } else if (rot > 0 && layer < maze.grid[0][0].length-1) {
@@ -423,18 +425,21 @@ public class GUI extends javax.swing.JFrame {
 
     private void animateSolveStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_animateSolveStateChanged
         
+        //Tell the maze solver whether or not to animate it's process based on the state of the checkbox
         mazeSolver.setAnimate(animateSolve.isSelected());
         
     }//GEN-LAST:event_animateSolveStateChanged
 
     private void speedSolveStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_speedSolveStateChanged
         
+        //Tell the maze solver how fast to animate
         mazeSolver.setSpeed(speedSolve.getValue());
         
     }//GEN-LAST:event_speedSolveStateChanged
 
     private void solveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_solveActionPerformed
         
+        //Solve the maze if its done being generated
         if (maze != null && maze.complete) {
             mazeSolver.solve(maze, (SolvingAlgorithm) algorithm.getSelectedItem());
         }
@@ -445,10 +450,12 @@ public class GUI extends javax.swing.JFrame {
         
         if (maze != null && maze.complete) {
             
+            //Get the cell where the user clicked
             MazeCell cell = maze.getCellAt(evt.getX(), evt.getY());
             
             if (cell != null) {
                 
+                //Kill the maze solver if its running
                 if (evt.getButton() == MouseEvent.BUTTON1 || evt.getButton() == MouseEvent.BUTTON3) {
                     if (mazeSolver.isRunning()) {
                         mazeSolver.setRunning(false);
@@ -456,6 +463,7 @@ public class GUI extends javax.swing.JFrame {
                     maze.reset();
                 }
                 
+                //Set the start or end position
                 if (evt.getButton() == MouseEvent.BUTTON1) {
                     maze.setStart(cell);
                 } else if (evt.getButton() == MouseEvent.BUTTON3) {

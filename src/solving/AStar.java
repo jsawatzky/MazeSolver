@@ -13,16 +13,17 @@ import maze.MazeCell;
  */
 public class AStar extends SolvingAlgorithm {
     
+    //Fields 
     private PriorityQueue<MazeCell> openSet;
     private HashMap<MazeCell, Double> score;
     private HashMap<MazeCell, MazeCell> cameFrom;
-    
-    private int numCellsVisited, numSteps;
 
+    //Constructor
     public AStar(boolean animate, int speed, JProgressBar progress) {
         super(animate, speed, progress);
     }
 
+    //Solve the given maze
     @Override
     public MazeSolution solve(Maze maze) {
         
@@ -37,15 +38,19 @@ public class AStar extends SolvingAlgorithm {
         score = new HashMap<>();
         cameFrom = new HashMap<>();
         
+        //Add the start to the current to the queue
         openSet.add(maze.getStart());
         score.put(maze.getStart(), 0.0);
         
+        //Loop until there are no more cells to be looked at
         while (!openSet.isEmpty()) {
             
+            //Get the cell closest to the end
             MazeCell cur = openSet.poll();
             
             progress.setValue((int) maze.getDistanceFromEnd(maze.getStart())-(int) maze.getDistanceFromEnd(cur));
             
+            //Return solution if at end
             if (cur.equals(maze.getEnd())) {
                 progress.setValue((int) maze.getDistanceFromEnd(maze.getStart()));
                 running = false;
@@ -55,6 +60,7 @@ public class AStar extends SolvingAlgorithm {
             cur.state = MazeCell.VISITED;
             numCellsVisited++;
             
+            //Animate if the user wants it and kill if thread was stopped
             if (animate && running) {
                 maze.render();
                 sleep(1000/speed);
@@ -62,21 +68,25 @@ public class AStar extends SolvingAlgorithm {
                 return null;
             }
             
+            //Check neighbors for new shortest paths
             for (MazeCell neighbor: maze.getUnvisitedNeighbors(cur)) {
                 
                 numSteps++;
                 
                 double tentativeScore = score.get(cur) + 1;
                 
+                //Check if this is a new shortest path
                 if (!openSet.contains(neighbor)) {
                     openSet.add(neighbor);
-                } else if (tentativeScore >= score.get(neighbor)) {
+                } else if (tentativeScore >= score.getOrDefault(neighbor, Double.POSITIVE_INFINITY)) {
                     continue;
                 }
                 
+                //Set new shortest path to neighbor
                 cameFrom.put(neighbor, cur);
                 score.put(neighbor, tentativeScore);
                 
+                //Animate if the user wants it and kill if thread was stopped
                 if (animate && running) {
                 maze.render();
                 sleep(1000/speed);
@@ -96,6 +106,7 @@ public class AStar extends SolvingAlgorithm {
     
     private ArrayList<MazeCell> createPath(MazeCell from) {
         
+        //Backtrack until the path is found
         ArrayList<MazeCell> path = new ArrayList<>();
         
         from.state = MazeCell.IN_PATH;
@@ -129,6 +140,7 @@ public class AStar extends SolvingAlgorithm {
         @Override
         public int compare(MazeCell o1, MazeCell o2) {
             
+            //Compare o1 and o2 to see which is closer to the end
             double dist1 = maze.getDistanceFromEnd(o1);
             double dist2 = maze.getDistanceFromEnd(o2);
             

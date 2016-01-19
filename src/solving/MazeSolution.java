@@ -8,9 +8,11 @@ import maze.MazeCell;
  */
 public class MazeSolution {
     
+    //Fields
     private ArrayList<MazeCell> path;
     private int numCellsVisited, numSteps;
 
+    //Constructor
     public MazeSolution(ArrayList<MazeCell> path, int numCellsVisited, int numSteps) {
         this.path = path;
         this.numCellsVisited = numCellsVisited;
@@ -18,6 +20,7 @@ public class MazeSolution {
         
     }
 
+    //Format as string for display to user
     @Override
     public String toString() {
         return "Length of Path: " + path.size() + "\nNumber of Cells Visited: " + numCellsVisited + "\nNumber of Steps Taken: " + numSteps;

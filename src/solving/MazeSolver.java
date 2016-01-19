@@ -7,6 +7,7 @@ import maze.Maze;
 
 public class MazeSolver implements Runnable {
     
+    //Fields
     private Thread thread;
     private volatile boolean running = false;
     
@@ -21,6 +22,7 @@ public class MazeSolver implements Runnable {
     private final JProgressBar progressBar;
     private final JTextArea results;
 
+    //Constructor
     public MazeSolver(boolean animate, int speed, JProgressBar progressBar, JTextArea results) {
         
         this.animate = animate;
@@ -28,6 +30,7 @@ public class MazeSolver implements Runnable {
         this.progressBar = progressBar;
         this.results = results;
         
+        //Add algortithms 
         algorithms.add(new RecursiveBacktracker(animate, speed, progressBar));
         algorithms.add(new AStar(animate, speed, progressBar));
         
@@ -35,6 +38,7 @@ public class MazeSolver implements Runnable {
     
     public void solve(Maze maze, SolvingAlgorithm algorithm) {
         
+        //Kill the current thread (If there is one)
         if (running) {
             running = false;
             curAlgorithm.setRunning(false);
@@ -43,12 +47,15 @@ public class MazeSolver implements Runnable {
             } catch (InterruptedException ex) {}
         }
         
+        //Set the current algorithm and its properties
         curAlgorithm = algorithm;
         curAlgorithm.setAnimate(animate);
         curAlgorithm.setSpeed(speed);
         
+        //Set the current maze
         curMaze = maze;
         
+        //Create and start the thread
         thread = new Thread(this);
         
         thread.start();
@@ -60,12 +67,15 @@ public class MazeSolver implements Runnable {
         
         running = true;
         
+        //Reset the maze in case it's been solved before
         curMaze.reset();
         
+        //Solve the maze
         MazeSolution solution = curAlgorithm.solve(curMaze);
         
         curMaze.render();
         
+        //Display results
         if (solution != null) {
             results.setText(solution.toString());
         } else {
@@ -76,6 +86,8 @@ public class MazeSolver implements Runnable {
         
     }
 
+    //Getters and Setters
+    
     public boolean isRunning() {
         return running;
     }

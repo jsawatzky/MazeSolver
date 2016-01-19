@@ -13,12 +13,16 @@ import maze.Maze;
  */
 public abstract class SolvingAlgorithm {
 
+    //Fields
     protected boolean running = false;
     
     protected boolean animate;
     protected int speed;
     protected JProgressBar progress;
+    
+    protected int numCellsVisited, numSteps;
 
+    //Constructor
     public SolvingAlgorithm(boolean animate, int speed, JProgressBar progress) {
         
         this.animate = animate;
@@ -27,8 +31,10 @@ public abstract class SolvingAlgorithm {
         
     }
     
+    //Abstract method to be implemented
     public abstract MazeSolution solve(Maze maze);
     
+    //Pause the thread
     protected static void sleep(int ms) {
         
         try {
@@ -36,6 +42,8 @@ public abstract class SolvingAlgorithm {
         } catch (Exception e) {}
         
     }
+    
+    //Getters and Setters
 
     public void setRunning(boolean running) {
         this.running = running;
@@ -49,10 +57,7 @@ public abstract class SolvingAlgorithm {
         this.speed = speed;
     }
 
-    public void setProgress(JProgressBar progress) {
-        this.progress = progress;
-    }
-
+    //Get the name of teh algorithm
     @Override
     public abstract String toString();
     

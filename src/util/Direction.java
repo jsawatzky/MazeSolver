@@ -4,21 +4,17 @@ import maze.MazeCell;
 
 public class Direction {
     
-    public static final Direction NORTH = new Direction(0);
-    public static final Direction EAST = new Direction(1);
-    public static final Direction SOUTH = new Direction(2);
-    public static final Direction WEST = new Direction(3);
-    public static final Direction UP = new Direction(4);
-    public static final Direction DOWN = new Direction(5);
-    
+    //Field
     public final int dir;
 
+    //Constructor
     private Direction(int dir) {
         
         this.dir = dir;
         
     }
     
+    //Get the opposite direction of the current one
     public Direction getOpposite() {
         
         if (dir < 4) {
@@ -31,6 +27,7 @@ public class Direction {
         
     }
     
+    //Get the direction from cell1 to cell2
     public static Direction getDirectionBetweenAdjacent(MazeCell cell1, MazeCell cell2) {
         
         if (cell1.x < cell2.x) {
@@ -48,5 +45,13 @@ public class Direction {
         }
         
     }
+    
+    //Constants
+    public static final Direction NORTH = new Direction(0);
+    public static final Direction EAST = new Direction(1);
+    public static final Direction SOUTH = new Direction(2);
+    public static final Direction WEST = new Direction(3);
+    public static final Direction UP = new Direction(4);
+    public static final Direction DOWN = new Direction(5);
     
 }

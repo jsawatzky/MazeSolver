@@ -128,6 +128,8 @@ public class MazeGenerator implements Runnable {
             
             maze.render();
             
+            running = false;
+            
         }
 
     }
@@ -167,6 +169,10 @@ public class MazeGenerator implements Runnable {
 
     public void setzSize(int zSize) {
         this.zSize = zSize;
+    }
+
+    public boolean isRunning() {
+        return running;
     }
     
 }

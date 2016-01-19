@@ -6,13 +6,10 @@ package mazesolver;
 
 import generation.MazeGenerator;
 import java.awt.event.MouseEvent;
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.event.ListDataListener;
 import maze.Maze;
 import maze.MazeCell;
 import solving.MazeSolver;
-import solving.RecursiveBacktracker;
 import solving.SolvingAlgorithm;
 
 /**
@@ -61,7 +58,7 @@ public class GUI extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         zSize = new javax.swing.JSpinner();
         jPanel4 = new javax.swing.JPanel();
-        algorithm = new javax.swing.JComboBox<SolvingAlgorithm>();
+        algorithm = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
         animateSolve = new javax.swing.JCheckBox();
         speedSolve = new javax.swing.JSlider();
@@ -76,8 +73,13 @@ public class GUI extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Maze Solver");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
-        canvas.setToolTipText("<html>Legend:<br>Green = Start<br>Magenta = End<br>Gray = Not in maze<br>Black = Frontier<br>Yellow = Selected<br>Dark Gray = Visited<br>Red = In Path<br><br>Left-Click to set start<br>Right-Click to set end</html>");
+        canvas.setToolTipText("");
         canvas.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
             public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) {
                 canvasMouseWheelMoved(evt);
@@ -152,7 +154,7 @@ public class GUI extends javax.swing.JFrame {
         jLabel5.setText("Z Size");
         jLabel5.setFocusable(false);
 
-        zSize.setModel(new javax.swing.SpinnerNumberModel(15, 1, 100, 5));
+        zSize.setModel(new javax.swing.SpinnerNumberModel(15, 1, 100, 1));
         zSize.setFocusable(false);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -201,8 +203,8 @@ public class GUI extends javax.swing.JFrame {
                     .addComponent(xSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(ySize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -459,6 +461,10 @@ public class GUI extends javax.swing.JFrame {
         
     }//GEN-LAST:event_canvasMouseClicked
 
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        
+    }//GEN-LAST:event_formWindowClosing
+
     /**
      * @param args the command line arguments
      */
@@ -475,19 +481,14 @@ public class GUI extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new GUI().setVisible(true);
             }
@@ -521,4 +522,6 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JSpinner ySize;
     private javax.swing.JSpinner zSize;
     // End of variables declaration//GEN-END:variables
+
+    
 }

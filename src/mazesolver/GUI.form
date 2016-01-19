@@ -12,6 +12,9 @@
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
     <SyntheticProperty name="generateCenter" type="boolean" value="true"/>
   </SyntheticProperties>
+  <Events>
+    <EventHandler event="windowClosing" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="formWindowClosing"/>
+  </Events>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -62,7 +65,7 @@
   <SubComponents>
     <Container class="javax.swing.JPanel" name="canvas">
       <Properties>
-        <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;Legend:&lt;br&gt;Green = Start&lt;br&gt;Magenta = End&lt;br&gt;Gray = Not in maze&lt;br&gt;Black = Frontier&lt;br&gt;Yellow = Selected&lt;br&gt;Dark Gray = Visited&lt;br&gt;Red = In Path&lt;br&gt;&lt;br&gt;Left-Click to set start&lt;br&gt;Right-Click to set end&lt;/html&gt;"/>
+        <Property name="toolTipText" type="java.lang.String" value=""/>
       </Properties>
       <Events>
         <EventHandler event="mouseWheelMoved" listener="java.awt.event.MouseWheelListener" parameters="java.awt.event.MouseWheelEvent" handler="canvasMouseWheelMoved"/>
@@ -149,9 +152,9 @@
                       <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jLabel2" alignment="1" min="-2" max="-2" attributes="0"/>
-                      <Component id="ySize" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="ySize" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -263,7 +266,7 @@
         <Component class="javax.swing.JSpinner" name="zSize">
           <Properties>
             <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-              <SpinnerModel initial="15" maximum="100" minimum="1" numberType="java.lang.Integer" stepSize="5" type="number"/>
+              <SpinnerModel initial="15" maximum="100" minimum="1" numberType="java.lang.Integer" stepSize="1" type="number"/>
             </Property>
             <Property name="focusable" type="boolean" value="false"/>
           </Properties>
@@ -356,7 +359,7 @@
             <Property name="focusable" type="boolean" value="false"/>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JComboBox&lt;SolvingAlgorithm&gt;()"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JComboBox&lt;&gt;()"/>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;SolvingAlgorithm&gt;"/>
           </AuxValues>
         </Component>

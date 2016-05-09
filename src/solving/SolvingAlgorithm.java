@@ -4,8 +4,9 @@
  */
 package solving;
 
-import javax.swing.JProgressBar;
 import maze.Maze;
+
+import javax.swing.*;
 
 /**
  *
@@ -19,7 +20,7 @@ public abstract class SolvingAlgorithm {
     protected boolean animate;
     protected int speed;
     protected JProgressBar progress;
-    
+
     protected int numCellsVisited, numSteps;
 
     //Constructor
@@ -42,7 +43,7 @@ public abstract class SolvingAlgorithm {
         } catch (Exception e) {}
         
     }
-    
+
     //Getters and Setters
 
     public void setRunning(boolean running) {
@@ -57,7 +58,7 @@ public abstract class SolvingAlgorithm {
         this.speed = speed;
     }
 
-    //Get the name of teh algorithm
+    //Get the name of the algorithm
     @Override
     public abstract String toString();
     

@@ -65,3 +65,6 @@ nbproject/private/private.properties
 MazeSolver.iml
 *.properties
 nbproject/private/private.xml
+/.idea/
+/out/
+src/META-INF/MANIFEST.MF

@@ -1,7 +1,36 @@
 ---
 layout: default
-show_downloads: true
 ---
 <div class="content">
-	<p>Test stuffs</p>
+	<h1>About the Project</h1>
+	<p>MazeSolver is a Java application written as my final project for ICS 4UI
+	at Sir John A. Macdonald Secondary School. It uses a modified version of Prim's algorithm to
+	generate 3 dimensional mazes. It then solves those mazes using either a recursive backtracker algorithm
+	or the A* Pathfinding algorithm.</p>
+	
+	<h2>Use</h2>
+	<p>After launching the program you can select the size of the maze to generate using the spinners
+	on the right hand side. You may also choose to animate the generation process by selecting the box and
+	selecting the animation speed using the slider. Once the maze has finished generating, it will be displayed 
+	in the main window. The green square represents the start point of the maze, the majenta point represents the end point,
+	an up arrow represents that there is a passage to the level above the current layer, a down arrow represents a passge to 
+	the layer below, and a multi-directional arrow represents a passage to the layers both above and bellow. You can switch 
+	between layers of the maze using the scroll wheel. To change the start point to a given square left click the square, 
+	similarly to change the end point, right click. To solve maze select one of the	two solving algorithms using the 
+	dropdown menu. In the same methid as the generation you may animate the solving	process. After the maze has been 
+	solved it will display stats about the solution in the bottom right corner. You can use these to compare the 
+	two algorithms.</p>
+	
+	<h2>Download</h2>
+	<p>You may download the executable JAR file <a href="https://github.com/jsawatzky/MazeSolver/releases/download/v1.0/MazeSolver.jar">here</a>.</p>
+	
+	<hr>
+	
+	<h2>Screenshots</h2>
+	<span>
+	<img style="padding: 5px 5px 5px 5px; width: 45%;" src="gui.png">
+	<img style="padding: 5px 5px 5px 5px; width: 45%;" src="3dmaze.png"></span>
+	<span>
+	<img style="padding: 5px 5px 5px 5px; width: 45%;" src="2dmaze.png">
+	<img style="padding: 5px 5px 5px 5px; width: 45%;" src="solvedmaze.png"></span>
 </div>
